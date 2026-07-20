@@ -59,6 +59,8 @@ def _duration_days(raw: str) -> Optional[int]:
         return n * 7
     if "day" in low:
         return n
+    if "hour" in low or "minute" in low:
+        return 0  # used for less than a day
     return None
 
 
