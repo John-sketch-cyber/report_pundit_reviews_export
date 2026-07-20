@@ -34,7 +34,7 @@ pip install -r requirements.txt
 python scrape_reviews.py --dry-run --max-pages 3
 
 # Full run (writes the Google Sheet):
-export GOOGLE_SERVICE_ACCOUNT_JSON="$(cat service_account.json)"
+export GOOGLE_SA_JSON="$(cat service_account.json)"
 export REVIEWS_SHEET_ID="<spreadsheet id>"
 python scrape_reviews.py
 ```
@@ -48,7 +48,7 @@ Required repo **secrets**:
 
 | Secret | Value |
 |---|---|
-| `GOOGLE_SERVICE_ACCOUNT_JSON` | Full service-account JSON key |
+| `GOOGLE_SA_JSON` | Full service-account JSON key (same account as the PostHog sync) |
 | `REVIEWS_SHEET_ID` | Target spreadsheet id (share the Sheet with the service-account email) |
 
 **Alerting:** GitHub Actions emails the repo owner on any non-zero exit. A failed

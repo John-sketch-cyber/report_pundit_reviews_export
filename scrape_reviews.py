@@ -71,10 +71,10 @@ def main(argv=None) -> int:
         return 0
 
     sheet_id = os.environ.get("REVIEWS_SHEET_ID")
-    creds = os.environ.get("GOOGLE_SERVICE_ACCOUNT_JSON")
+    creds = os.environ.get("GOOGLE_SA_JSON")
     if not sheet_id or not creds:
         log.warning(
-            "REVIEWS_SHEET_ID / GOOGLE_SERVICE_ACCOUNT_JSON not set; "
+            "REVIEWS_SHEET_ID / GOOGLE_SA_JSON not set; "
             "state written but Sheet NOT updated. Use --dry-run to silence."
         )
         return 0

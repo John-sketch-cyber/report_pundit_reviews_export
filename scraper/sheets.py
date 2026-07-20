@@ -19,10 +19,7 @@ COLUMNS = [
     "shop_domain", "website_link", "first_seen", "last_seen", "status",
 ]
 
-SCOPES = [
-    "https://www.googleapis.com/auth/spreadsheets",
-    "https://www.googleapis.com/auth/drive",
-]
+SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 
 
 def _rows(records: list[dict]) -> list[list]:
