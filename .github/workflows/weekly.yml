@@ -1,0 +1,46 @@
+name: Weekly review export
+
+on:
+  schedule:
+    - cron: "0 7 * * 1"      # Mondays 07:00 UTC
+  workflow_dispatch: {}        # manual trigger for testing / re-runs
+
+permissions:
+  contents: write              # commit the updated state file back
+
+concurrency:
+  group: weekly-review-export
+  cancel-in-progress: false
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run scraper
+        env:
+          REVIEWS_SHEET_ID: ${{ secrets.REVIEWS_SHEET_ID }}
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: python scrape_reviews.py
+
+      - name: Commit updated state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add state/reviews_state.json
+          if git diff --staged --quiet; then
+            echo "No state changes to commit."
+          else
+            git commit -m "chore: weekly review state $(date -u +%Y-%m-%d)"
+            git push
+          fi
